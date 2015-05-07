@@ -1,0 +1,72 @@
+plugins {
+    id 'com.github.hierynomus.license' version '0.11.0'  // https://github.com/hierynomus/license-gradle-plugin
+    id 'com.github.ben-manes.versions' version '0.9'
+}
+
+apply plugin: 'java'
+apply plugin: 'groovy'
+apply plugin: 'application'
+apply plugin: 'license'
+
+version = '0.0.1-SNAPSHOT'
+
+def fileEncoding = 'UTF-8'
+
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
+sourceSets.main.java.srcDirs = ['src/main/groovy']
+sourceSets.test.java.srcDirs = []
+sourceSets.main.groovy.srcDirs = []
+sourceSets.test.groovy.srcDirs = ['src/test/groovy']
+
+mainClassName = 'ch.petikoch.examples.feedback_control_java.FeedbackControlInJavaMain'
+
+repositories {
+    jcenter()
+}
+
+def groovyVersion = '2.4.3'
+def spockVersion = '1.0-groovy-2.4'
+def cglibVersion = '3.1'
+
+dependencies {
+    compile "org.codehaus.groovy:groovy-all:${groovyVersion}"
+    testCompile("org.spockframework:spock-core:${spockVersion}") {
+        exclude group: 'org.codehaus.groovy'
+    }
+    testCompile "cglib:cglib-nodep:${cglibVersion}" // spock mocks
+}
+
+test {
+    systemProperty 'file.encoding', fileEncoding
+}
+
+tasks.withType(GroovyCompile) {
+    groovyOptions.encoding = fileEncoding
+    options.encoding = fileEncoding
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = fileEncoding
+}
+
+// http://forums.gradle.org/gradle/topics/set_maxparallelforks_to_number_of_cores_on_the_current_machine
+tasks.withType(Test) {
+    maxParallelForks = Runtime.getRuntime().availableProcessors()
+}
+
+jar {
+    manifest {
+        attributes 'Implementation-Title': project.name,
+                'Built-By': System.getProperty('user.name'),
+                'Built-Date': new Date(),
+                'Built-JDK': System.getProperty('java.version'),
+                'Built-Gradle': gradle.gradleVersion
+    }
+}
+
+license {
+    header = rootProject.file('config/HEADER-cc_by-sa_4.0.txt')
+    strictCheck = true
+}

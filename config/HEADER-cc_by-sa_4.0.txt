@@ -1,0 +1,7 @@
+Copyright 2015 Peti Koch, All rights reserved.
+
+Project Info:
+https://github.com/Petikoch/feedback_control_bookexamples_in_java
+
+License:
+http://creativecommons.org/licenses/by-sa/4.0/deed.en
