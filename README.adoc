@@ -13,7 +13,8 @@ image:https://travis-ci.org/{github-user}/{project-name}.svg?branch={github-bran
 
 This github project contains a port of the examples from the excellent
 book http://shop.oreilly.com/product/0636920028970.do[*Feeback Control for computer Systems*] from Philipp K. Janert
-to the Java language. In the book the examples are in https://www.python.org[Python], here they are in Java 8.
+to the Java language. In the book the https://github.com/oreillymedia/feedback_control_for_computer_systems[examples] are in https://www.python.org[Python],
+here they are in Java 8.
 
 image::book.gif[]
 
