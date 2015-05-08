@@ -1,0 +1,74 @@
+= Feedback Control Bookexamples in Java
+Peti Koch
+:imagesdir: ./docs
+:project-name: feedback_control_bookexamples_in_java
+:github-branch: master
+:github-user: Petikoch
+:bintray-user: petikoch
+
+image:http://img.shields.io/badge/license-ASF2-blue.svg["Apache License 2", link="http://www.apache.org/licenses/LICENSE-2.0.txt"]
+image:https://travis-ci.org/{github-user}/{project-name}.svg?branch={github-branch}["Build Status", link="https://travis-ci.org/{github-user}/{project-name}"]
+
+== Introduction
+
+This github project contains a port of the examples from the excellent
+book http://shop.oreilly.com/product/0636920028970.do[*Feeback Control for computer Systems*] from Philipp K. Janert
+to the Java language. In the book the examples are in https://www.python.org[Python], here they are in Java 8.
+
+image::book.gif[]
+
+You will not find much explanation here about the examples, I assume you read the book yourself and
+wan't to try the examples yourself on the JVM. The book is written very well and compact,
+so the time for reading it is spent well.
+
+Personally, I think the topic *feedback control* is very promising for a lot of problems
+in computer systems and I assume, most of the software engineers don't know about it,
+although they use *feedback control* everyday without even noticing it
+(toilet flush? car cruise control? room temperature control? ...). At least for me this was true since 2015.
+
+== How to run the examples
+
+=== Via gradle (wrapper)
+
+Clone the git repo to your local machine, 'cd' to the created dir and call
+
+----
+> ./gradlew run
+----
+
+This will build the project, download all dependencies and startup the slightly modified http://www.groovy-lang.org/groovyconsole.html[groovy console].
+Run the code with the "Execute Groovy Script" Button in the toolbar. Open the examples via the "Open Groovy Script" Button in the toolbar (and yes, select a java-File).
+
+=== Via IDE
+
+Clone the repo directly and import it into your favourite IDE (IntelliJ, Eclipse, ...).
+
+Afterwards you can run the examples directly from the IDE (start e.g. with `Ch13_cache_closedloop_jumps.java`).
+
+== Requirements
+
+Java 8
+
+== Support
+
+Please use GitHub issues and pull requests for support.
+
+== Motivation
+
+Since I wasn't familiar with python and I usually work on the JVM
+with Java 7/8 and http://www.groovy-lang.org/index.html[Groovy],
+I thought it would be nice to have the code in a for me more familiar language.
+Also by porting it (and sometimes writing unit-tests for it), I became more familiar with the examples and to a deeper understanding of the topic.
+
+I also thought it would be nice to be able to change the code
+and see the resulting chart in the same "environment" with one tool.
+Therefor the groovy console with the http://www.jfree.org/jfreechart[JFreeChart] integration.
+
+And last but not least, I think I'll do some more work in this field, thinking of experimenting instead of "just" simulating
+with e.g. a dynamic sized thread-pool which adjusts itself to a given CPU load factor. For this, a lot of this
+code here comes handy then.
+
+
+Best regards,
+
+image::Signature.jpg[]

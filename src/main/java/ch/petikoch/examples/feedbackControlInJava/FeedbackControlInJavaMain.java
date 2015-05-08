@@ -30,7 +30,7 @@ import java.nio.charset.Charset;
 
 public class FeedbackControlInJavaMain {
 
-    public static final String EXAMPLES_DIR = "./src/main/groovy/ch/petikoch/examples/feedbackControlInJava";
+    public static final String EXAMPLES_DIR = "./src/main/java/ch/petikoch/examples/feedbackControlInJava/examples";
 
     public static void main(String[] args) {
         EventQueue.invokeLater(() -> {
@@ -66,7 +66,7 @@ public class FeedbackControlInJavaMain {
     }
 
     private static String readCh13Example() throws IOException {
-        return Files.toString(new File(EXAMPLES_DIR, "ch13/Ch13_cache_closedloop_jumps.groovy"), Charset.forName("UTF-8"));
+        return Files.toString(new File(EXAMPLES_DIR, "Ch13_cache_closedloop_jumps.java"), Charset.forName("UTF-8"));
     }
 
 }
