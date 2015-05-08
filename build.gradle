@@ -12,15 +12,13 @@ version = '0.0.1-SNAPSHOT'
 
 def fileEncoding = 'UTF-8'
 
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
-sourceSets.main.java.srcDirs = ['src/main/groovy']
 sourceSets.test.java.srcDirs = []
-sourceSets.main.groovy.srcDirs = []
 sourceSets.test.groovy.srcDirs = ['src/test/groovy']
 
-mainClassName = 'ch.petikoch.examples.feedback_control_java.FeedbackControlInJavaMain'
+mainClassName = 'ch.petikoch.examples.feedbackControlInJava.FeedbackControlInJavaMain'
 
 repositories {
     jcenter()
@@ -29,9 +27,18 @@ repositories {
 def groovyVersion = '2.4.3'
 def spockVersion = '1.0-groovy-2.4'
 def cglibVersion = '3.1'
+def jFreeChartVersion = '1.0.19'
+def apacheCommonsMath3Version = '3.5'
+def googleGuavaVersion = '18.0'
+def jcipVersion = '1.0'
 
 dependencies {
     compile "org.codehaus.groovy:groovy-all:${groovyVersion}"
+    compile "org.jfree:jfreechart:${jFreeChartVersion}"
+    compile "org.apache.commons:commons-math3:${apacheCommonsMath3Version}"
+    compile "com.google.guava:guava:${googleGuavaVersion}"
+    compile "net.jcip:jcip-annotations:${jcipVersion}"
+
     testCompile("org.spockframework:spock-core:${spockVersion}") {
         exclude group: 'org.codehaus.groovy'
     }
@@ -67,6 +74,6 @@ jar {
 }
 
 license {
-    header = rootProject.file('config/HEADER-cc_by-sa_4.0.txt')
+    header = rootProject.file('config/HEADER_apache_license2.txt')
     strictCheck = true
 }
