@@ -22,6 +22,7 @@ import ch.petikoch.examples.feedbackControlInJava.plotting.PlotSimpleSetpointAct
 import ch.petikoch.examples.feedbackControlInJava.simulationFramework.Component;
 import ch.petikoch.examples.feedbackControlInJava.simulationFramework.SamplingInterval;
 import ch.petikoch.examples.feedbackControlInJava.simulationFramework.filtersAndActuators.Identity;
+import ch.petikoch.examples.feedbackControlInJava.simulationFramework.setpoints.SetpointFunction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,14 +34,14 @@ import java.util.List;
 public class ClosedLoops {
 
     public static List<PlotSimpleSetpointActualItem> closed_loop(SamplingInterval samplingInterval,
-                                                                 double setpoint,
+                                                                 SetpointFunction setpoint,
                                                                  Component<Double, Double> controller,
                                                                  Component<Integer, Double> plant) {
         return closed_loop(samplingInterval, setpoint, controller, plant, 5000, false, new Identity<>(), new Identity<>());
     }
 
     public static List<PlotSimpleSetpointActualItem> closed_loop(SamplingInterval samplingInterval,
-                                                                 double setpoint,
+                                                                 SetpointFunction setpoint,
                                                                  Component<Double, Double> controller,
                                                                  Component<Integer, Double> plant,
                                                                  int simDuration) {
@@ -48,7 +49,7 @@ public class ClosedLoops {
     }
 
     public static List<PlotSimpleSetpointActualItem> closed_loop(SamplingInterval samplingInterval,
-                                                                 double setpoint, //TODO make this a functional interface
+                                                                 SetpointFunction setpoint,
                                                                  Component<Double, Double> controller,
                                                                  Component<Integer, Double> plant,
                                                                  int simDuration,
@@ -59,7 +60,7 @@ public class ClosedLoops {
 
         double z = 0.0;
         for (int t = 0; t < simDuration; t++) {
-            double r = setpoint;
+            double r = setpoint.at(t);
             double e = r - z;
             if (inverted) {
                 e = -e;
@@ -70,7 +71,7 @@ public class ClosedLoops {
             z = returnFilter.work(y);
 
             System.out.println(t + ", " + (t * samplingInterval.getInterval()) + ", " + r + ", " + e + ", " + u + ", " + v + ", " + y + ", " + z + ", " + plant.monitoring());
-            plotSimpleSetpointActualItems.add(new PlotSimpleSetpointActualItem(t, setpoint, y));
+            plotSimpleSetpointActualItems.add(new PlotSimpleSetpointActualItem(t, setpoint.at(t), y));
         }
 
         return plotSimpleSetpointActualItems;

@@ -26,32 +26,31 @@ import ch.petikoch.examples.feedbackControlInJava.plotting.PlotSimpleSetpointAct
 import ch.petikoch.examples.feedbackControlInJava.simulationFramework.SamplingInterval;
 import ch.petikoch.examples.feedbackControlInJava.simulationFramework.controllers.pidcontrollers.PidController;
 import ch.petikoch.examples.feedbackControlInJava.simulationFramework.loopFunctions.ClosedLoops;
-import ch.petikoch.examples.feedbackControlInJava.simulationFramework.setpoints.ConstantSetpointFunction;
 import ch.petikoch.examples.feedbackControlInJava.simulationFramework.setpoints.SetpointFunction;
 import org.apache.commons.math3.distribution.NormalDistribution;
 
 import java.util.List;
 
 /**
- * A java port of the closedloop_jumps python function from
+ * A java port of the closedloop python function from
  * https://github.com/oreillymedia/feedback_control_for_computer_systems/blob/master/ch13-cache.py
  */
-public class Ch13_cache_closedloop_jumps {
+public class Ch13_cache_closedloop {
 
     public static void main(String[] args) {
         SamplingInterval samplingInterval = new SamplingInterval(1);
         DemandFunction<Integer> demandFunction = time -> {
-            if (time < 3000) {
-                return (int) new NormalDistribution(0.0, 15.0).sample(); // should be similiar to pythons random.gauss( 0, 15 )
-            } else if (time < 5000) {
-                return (int) new NormalDistribution(0.0, 35.0).sample();
+            return (int) new NormalDistribution(0.0, 15.0).sample();  // should be similiar to pythons random.gauss( 0, 15 )
+        };
+        SetpointFunction setpoint = time -> {
+            if (time > 5000) {
+                return 0.5;
             } else {
-                return (int) new NormalDistribution(100.0, 15.0).sample();
+                return 0.7;
             }
         };
         SmoothedCache smoothedCache = new SmoothedCache(0, demandFunction, 100);
-        PidController pidController = new PidController(270.0, 7.5, samplingInterval);
-        SetpointFunction setpoint = new ConstantSetpointFunction(0.7);
+        PidController pidController = new PidController(100, 250, samplingInterval);
 
         JPanelDisplayer.clearDisplay();
         List<PlotSimpleSetpointActualItem> plotDataItems = ClosedLoops.closed_loop(samplingInterval, setpoint, pidController, smoothedCache, 10000);
