@@ -19,11 +19,11 @@ here they are in Java 8.
 image::book.gif[]
 
 You will not find much explanation here about the examples, I assume you read the book yourself and
-wan't to try the examples yourself on the JVM. The book is written very well and compact,
+want to try the examples yourself on the JVM. The book is written very well and compact,
 so the time for reading it is spent well.
 
-Personally, I think the *feedback control* topic is very promising for a lot of problems
-in computer systems and I assume, most of the software engineers don't know about it,
+Personally, I think that the *feedback control* topic is very promising for a lot of problems
+in computer systems today and I assume, most of the software engineers don't know about it,
 although they use *feedback control* everyday without even noticing it
 (toilet flush? car cruise control? room temperature control? ...). At least for me this was true since 2015.
 
@@ -38,7 +38,7 @@ Clone the git repo to your local machine, `cd` to the created dir and execute
 ----
 
 This will build the project, download all dependencies and startup the slightly modified http://www.groovy-lang.org/groovyconsole.html[groovy console].
-Run the code with the "Execute Groovy Script" Button in the toolbar. Open the examples via the "Open Groovy Script" Button in the toolbar (and yes, select a java-File).
+Run the code with the "Execute Groovy Script" Button in the toolbar. Open the examples via the "Open Groovy Script" Button in the toolbar (and yes, select one of the java-Files).
 
 === Via IDE
 
@@ -59,14 +59,15 @@ Please use GitHub issues and pull requests for support.
 Since I wasn't familiar with python and I usually work on the JVM
 with Java 7/8 and http://www.groovy-lang.org/index.html[Groovy],
 I thought it would be nice to have the code in a for me more familiar language.
-Also by porting it (and sometimes writing unit-tests for it), I became more familiar with the examples and to a deeper understanding of the topic.
+Also by porting it, I became more familiar with the examples and to a deeper understanding of the topic.
+The additional written unit-tests might help you to, to better understand the "things".
 
 I also thought it would be nice to be able to change the code
 and see the resulting chart in the same "environment" with one tool.
 Therefor the groovy console with the http://www.jfree.org/jfreechart[JFreeChart] integration.
 
 And last but not least, I think I'll do some more work in this field, thinking of experimenting instead of "just" simulating
-with e.g. a dynamic sized thread-pool which adjusts itself to a given CPU load factor. With real threads,
+with e.g. a dynamic sized thread-pool which adjusts the number of threads depending on the CPU load. With real threads,
 real runnables, etc... For this, a lot of this code here comes handy.
 
 
