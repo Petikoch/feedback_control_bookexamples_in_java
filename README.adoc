@@ -22,7 +22,7 @@ You will not find much explanation here about the examples, I assume you read th
 wan't to try the examples yourself on the JVM. The book is written very well and compact,
 so the time for reading it is spent well.
 
-Personally, I think the topic *feedback control* is very promising for a lot of problems
+Personally, I think the *feedback control* topic is very promising for a lot of problems
 in computer systems and I assume, most of the software engineers don't know about it,
 although they use *feedback control* everyday without even noticing it
 (toilet flush? car cruise control? room temperature control? ...). At least for me this was true since 2015.
@@ -31,7 +31,7 @@ although they use *feedback control* everyday without even noticing it
 
 === Via gradle (wrapper)
 
-Clone the git repo to your local machine, 'cd' to the created dir and call
+Clone the git repo to your local machine, `cd` to the created dir and execute
 
 ----
 > ./gradlew run
@@ -66,8 +66,8 @@ and see the resulting chart in the same "environment" with one tool.
 Therefor the groovy console with the http://www.jfree.org/jfreechart[JFreeChart] integration.
 
 And last but not least, I think I'll do some more work in this field, thinking of experimenting instead of "just" simulating
-with e.g. a dynamic sized thread-pool which adjusts itself to a given CPU load factor. For this, a lot of this
-code here comes handy then.
+with e.g. a dynamic sized thread-pool which adjusts itself to a given CPU load factor. With real threads,
+real runnables, etc... For this, a lot of this code here comes handy.
 
 
 Best regards,
