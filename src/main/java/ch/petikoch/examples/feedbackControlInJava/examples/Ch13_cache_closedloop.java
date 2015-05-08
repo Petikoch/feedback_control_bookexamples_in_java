@@ -39,22 +39,36 @@ public class Ch13_cache_closedloop {
 
     public static void main(String[] args) {
         SamplingInterval samplingInterval = new SamplingInterval(1);
-        DemandFunction<Integer> demandFunction = time -> {
-            return (int) new NormalDistribution(0.0, 15.0).sample();  // should be similiar to pythons random.gauss( 0, 15 )
-        };
-        SetpointFunction setpoint = time -> {
-            if (time > 5000) {
-                return 0.5;
-            } else {
-                return 0.7;
-            }
-        };
+        DemandFunction<Integer> demandFunction = new RandomDemandFunction();
+        SetpointFunction setpoint = new LowerDemandAfter5000SetpointFunction();
         SmoothedCache smoothedCache = new SmoothedCache(0, demandFunction, 100);
         PidController pidController = new PidController(100, 250, samplingInterval);
 
         JPanelDisplayer.clearDisplay();
         List<PlotSimpleSetpointActualItem> plotDataItems = ClosedLoops.closed_loop(samplingInterval, setpoint, pidController, smoothedCache, 10000);
         JPanelDisplayer.displayPanel(JFreeChartPlotter.plot(plotDataItems, "Cache hitrate"));
+    }
+
+    // TODO how can we write this using java 8 lambdas, so that groovy can understand it?
+    // groovy closure syntay != java 8 lambda syntax
+    private static class RandomDemandFunction implements DemandFunction<Integer> {
+
+        @Override
+        public Integer demand(long time) {
+            return (int) new NormalDistribution(0.0, 15.0).sample();  // should be similiar to pythons random.gauss( 0, 15 )
+        }
+    }
+
+    private static class LowerDemandAfter5000SetpointFunction implements SetpointFunction {
+
+        @Override
+        public Double at(long time) {
+            if (time > 5000) {
+                return 0.5;
+            } else {
+                return 0.7;
+            }
+        }
     }
 
 }

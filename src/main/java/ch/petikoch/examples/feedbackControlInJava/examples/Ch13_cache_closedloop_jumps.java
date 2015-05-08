@@ -40,15 +40,7 @@ public class Ch13_cache_closedloop_jumps {
 
     public static void main(String[] args) {
         SamplingInterval samplingInterval = new SamplingInterval(1);
-        DemandFunction<Integer> demandFunction = time -> {
-            if (time < 3000) {
-                return (int) new NormalDistribution(0.0, 15.0).sample(); // should be similiar to pythons random.gauss( 0, 15 )
-            } else if (time < 5000) {
-                return (int) new NormalDistribution(0.0, 35.0).sample();
-            } else {
-                return (int) new NormalDistribution(100.0, 15.0).sample();
-            }
-        };
+        DemandFunction<Integer> demandFunction = new RandomJumpDemandFunction();
         SmoothedCache smoothedCache = new SmoothedCache(0, demandFunction, 100);
         PidController pidController = new PidController(270.0, 7.5, samplingInterval);
         SetpointFunction setpoint = new ConstantSetpointFunction(0.7);
@@ -56,6 +48,20 @@ public class Ch13_cache_closedloop_jumps {
         JPanelDisplayer.clearDisplay();
         List<PlotSimpleSetpointActualItem> plotDataItems = ClosedLoops.closed_loop(samplingInterval, setpoint, pidController, smoothedCache, 10000);
         JPanelDisplayer.displayPanel(JFreeChartPlotter.plot(plotDataItems, "Cache hitrate"));
+    }
+
+    private static class RandomJumpDemandFunction implements DemandFunction<Integer> {
+
+        @Override
+        public Integer demand(long time) {
+            if (time < 3000) {
+                return (int) new NormalDistribution(0.0, 15.0).sample(); // should be similiar to pythons random.gauss( 0, 15 )
+            } else if (time < 5000) {
+                return (int) new NormalDistribution(0.0, 35.0).sample();
+            } else {
+                return (int) new NormalDistribution(100.0, 15.0).sample();
+            }
+        }
     }
 
 }
