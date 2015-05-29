@@ -16,25 +16,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ch.petikoch.examples.feedbackControlInJava.plotting;
+package ch.petikoch.examples.feedbackControlInJava.ui.plotting;
 
-import net.jcip.annotations.NotThreadSafe;
+import com.google.common.base.Preconditions;
+import net.jcip.annotations.ThreadSafe;
 import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities;
 
 import javax.swing.*;
 import java.awt.*;
 
-@NotThreadSafe
+@ThreadSafe
 public class JPanelDisplayer {
 
-    public static JPanel PANEL_HOLDER = null;
+    private static JPanel PANEL_HOLDER = null;
+
+    public static void usePanelHolder(JPanel holder) {
+        Preconditions.checkState(SwingUtilities.isEventDispatchThread());
+
+        JPanelDisplayer.PANEL_HOLDER = holder;
+    }
 
     public static void displayPanel(JPanel panel) {
         displayPanel(panel, "Feedback Control", 800, 600);
     }
 
     public static void displayPanel(JPanel panel, String frameTitel, int panelWidth, int panelHeight) {
+        Preconditions.checkState(SwingUtilities.isEventDispatchThread());
+
         if (PANEL_HOLDER == null) {
             ApplicationFrame applicationFrame = new ApplicationFrame(frameTitel);
             panel.setPreferredSize(new java.awt.Dimension(panelWidth, panelHeight));
@@ -48,17 +57,21 @@ public class JPanelDisplayer {
     }
 
     public static void clearDisplay() {
+        Preconditions.checkState(SwingUtilities.isEventDispatchThread());
+
         if (PANEL_HOLDER != null) {
             setInPanelHolder(new JLabel("Please wait...", SwingConstants.CENTER));
         }
     }
 
     private static void setInPanelHolder(Component component) {
+        Preconditions.checkState(SwingUtilities.isEventDispatchThread());
+
         PANEL_HOLDER.removeAll();
         PANEL_HOLDER.setLayout(new BorderLayout());
         PANEL_HOLDER.add(component, BorderLayout.CENTER);
 
-        PANEL_HOLDER.invalidate();
+        PANEL_HOLDER.revalidate();
         PANEL_HOLDER.repaint();
     }
 }

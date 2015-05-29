@@ -20,16 +20,15 @@ package ch.petikoch.examples.feedbackControlInJava.examples;
 
 import ch.petikoch.examples.feedbackControlInJava.ch13.DemandFunction;
 import ch.petikoch.examples.feedbackControlInJava.ch13.SmoothedCache;
-import ch.petikoch.examples.feedbackControlInJava.plotting.JFreeChartPlotter;
-import ch.petikoch.examples.feedbackControlInJava.plotting.JPanelDisplayer;
-import ch.petikoch.examples.feedbackControlInJava.plotting.PlotSimpleSetpointActualItem;
 import ch.petikoch.examples.feedbackControlInJava.simulationFramework.SamplingInterval;
 import ch.petikoch.examples.feedbackControlInJava.simulationFramework.controllers.pidcontrollers.PidController;
 import ch.petikoch.examples.feedbackControlInJava.simulationFramework.loopFunctions.ClosedLoops;
 import ch.petikoch.examples.feedbackControlInJava.simulationFramework.setpoints.SetpointFunction;
+import ch.petikoch.examples.feedbackControlInJava.ui.PlottingAndSysOutPrintingSubscriber;
+import ch.petikoch.examples.feedbackControlInJava.ui.plotting.TimeSetpointActualPlotItem;
+import javaslang.Tuple2;
 import org.apache.commons.math3.distribution.NormalDistribution;
-
-import java.util.List;
+import rx.Observable;
 
 /**
  * A java port of the closedloop python function from
@@ -44,18 +43,16 @@ public class Ch13_cache_closedloop {
         SmoothedCache smoothedCache = new SmoothedCache(0, demandFunction, 100);
         PidController pidController = new PidController(100, 250, samplingInterval);
 
-        JPanelDisplayer.clearDisplay();
-        List<PlotSimpleSetpointActualItem> plotDataItems = ClosedLoops.closed_loop(samplingInterval, setpoint, pidController, smoothedCache, 10000);
-        JPanelDisplayer.displayPanel(JFreeChartPlotter.plot(plotDataItems, "Cache hitrate"));
+        Observable<Tuple2<TimeSetpointActualPlotItem, String>> plotDataSource =
+                ClosedLoops.closed_loop(samplingInterval, setpoint, pidController, smoothedCache, 10000);
+        plotDataSource.onBackpressureBlock().subscribe(new PlottingAndSysOutPrintingSubscriber("Cache hitrate", 50));
     }
 
-    // TODO how can we write this using java 8 lambdas, so that groovy can understand it?
-    // groovy closure syntay != java 8 lambda syntax
     private static class RandomDemandFunction implements DemandFunction<Integer> {
 
         @Override
         public Integer demand(long time) {
-            return (int) new NormalDistribution(0.0, 15.0).sample();  // should be similiar to pythons random.gauss( 0, 15 )
+            return (int) new NormalDistribution(0.0, 15.0).sample();  // similiar to pythons random.gauss( 0, 15 )
         }
     }
 

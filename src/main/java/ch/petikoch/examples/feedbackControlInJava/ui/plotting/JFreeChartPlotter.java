@@ -16,8 +16,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ch.petikoch.examples.feedbackControlInJava.plotting;
+package ch.petikoch.examples.feedbackControlInJava.ui.plotting;
 
+import ch.petikoch.examples.feedbackControlInJava.ui.util.SwingUtils;
 import net.jcip.annotations.ThreadSafe;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -30,19 +31,28 @@ import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
 import javax.swing.*;
-import java.util.List;
+import java.lang.reflect.InvocationTargetException;
 
 @ThreadSafe
 public class JFreeChartPlotter {
 
-    public static JPanel plot(List<PlotSimpleSetpointActualItem> plotSimpleSetpointActualItems,
-                              String chartTitle) {
-        XYSeriesCollection dataset = createDataset(plotSimpleSetpointActualItems);
-        JFreeChart chart = createChart(dataset, chartTitle);
-        return createPanel(chart);
+    private XYSeriesCollection dataset;
+
+    public JFreeChartPlotter(String chartTitle) {
+        try {
+            SwingUtils.executeBlockingOnEdt(() -> {
+                JPanelDisplayer.clearDisplay();
+                dataset = createDataset();
+                JFreeChart chart = createChart(dataset, chartTitle);
+                JPanel panel = createPanel(chart);
+                JPanelDisplayer.displayPanel(panel);
+            });
+        } catch (InterruptedException | InvocationTargetException ex) {
+            SwingUtils.printStackTraceAndDisplayToUser(ex);
+        }
     }
 
-    private static XYSeriesCollection createDataset(List<PlotSimpleSetpointActualItem> plotSimpleSetpointActualItems) {
+    private XYSeriesCollection createDataset() {
         XYSeriesCollection dataset = new XYSeriesCollection();
 
         XYSeries setpointSeries = new XYSeries("Setpoint");
@@ -51,16 +61,11 @@ public class JFreeChartPlotter {
         dataset.addSeries(setpointSeries);
         dataset.addSeries(actualSeries);
 
-        plotSimpleSetpointActualItems.forEach(plotEvent -> {
-            setpointSeries.add(plotEvent.getTime(), plotEvent.getSetpoint());
-            actualSeries.add(plotEvent.getTime(), plotEvent.getActual());
-        });
-
         return dataset;
     }
 
-    private static JFreeChart createChart(XYDataset dataset,
-                                          String chartTitle) {
+    private JFreeChart createChart(XYDataset dataset,
+                                   String chartTitle) {
         JFreeChart chart = ChartFactory.createXYLineChart(
                 chartTitle,
                 "Time steps",
@@ -84,9 +89,28 @@ public class JFreeChartPlotter {
         return chart;
     }
 
-    private static JPanel createPanel(JFreeChart chart) {
+    private JPanel createPanel(JFreeChart chart) {
         ChartPanel panel = new ChartPanel(chart);
         panel.setMouseWheelEnabled(true);
         return panel;
+    }
+
+    public void plot(TimeSetpointActualPlotItem plotItem) {
+        if (!Thread.currentThread().isInterrupted()) {
+            try {
+                SwingUtils.executeBlockingOnEdt(() -> {
+                            XYSeries setpointSeries = dataset.getSeries(0);
+                            XYSeries actualSeries = dataset.getSeries(1);
+
+                            setpointSeries.add(plotItem.getTime(), plotItem.getSetpoint());
+                            actualSeries.add(plotItem.getTime(), plotItem.getActual());
+                        }
+                );
+            } catch (InvocationTargetException ex) {
+                SwingUtils.printStackTraceAndDisplayToUser(ex);
+            } catch (InterruptedException ignored) {
+                Thread.currentThread().interrupt();
+            }
+        }
     }
 }

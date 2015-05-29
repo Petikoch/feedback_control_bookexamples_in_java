@@ -16,20 +16,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ch.petikoch.examples.feedbackControlInJava.plotting;
+package ch.petikoch.examples.feedbackControlInJava.ui.plotting;
 
 import net.jcip.annotations.Immutable;
 
 @Immutable
-public class PlotSimpleSetpointActualItem {
+public class TimeSetpointActualPlotItem {
 
     private final long time;
     private final double setpoint;
     private final double actual;
 
-    public PlotSimpleSetpointActualItem(long time,
-                                        double setpoint,
-                                        double actual) {
+    public TimeSetpointActualPlotItem(long time,
+                                      double setpoint,
+                                      double actual) {
         this.time = time;
         this.setpoint = setpoint;
         this.actual = actual;

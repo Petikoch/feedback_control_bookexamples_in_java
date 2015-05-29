@@ -18,14 +18,13 @@
  */
 package ch.petikoch.examples.feedbackControlInJava.simulationFramework.loopFunctions;
 
-import ch.petikoch.examples.feedbackControlInJava.plotting.PlotSimpleSetpointActualItem;
 import ch.petikoch.examples.feedbackControlInJava.simulationFramework.Component;
 import ch.petikoch.examples.feedbackControlInJava.simulationFramework.SamplingInterval;
 import ch.petikoch.examples.feedbackControlInJava.simulationFramework.filtersAndActuators.Identity;
 import ch.petikoch.examples.feedbackControlInJava.simulationFramework.setpoints.SetpointFunction;
-
-import java.util.ArrayList;
-import java.util.List;
+import ch.petikoch.examples.feedbackControlInJava.ui.plotting.TimeSetpointActualPlotItem;
+import javaslang.Tuple2;
+import rx.Observable;
 
 /**
  * A java port of the python closed_loop loops from
@@ -33,47 +32,58 @@ import java.util.List;
  */
 public class ClosedLoops {
 
-    public static List<PlotSimpleSetpointActualItem> closed_loop(SamplingInterval samplingInterval,
-                                                                 SetpointFunction setpoint,
-                                                                 Component<Double, Double> controller,
-                                                                 Component<Integer, Double> plant) {
+    public static Observable<Tuple2<TimeSetpointActualPlotItem, String>> closed_loop(SamplingInterval samplingInterval,
+                                                                                     SetpointFunction setpoint,
+                                                                                     Component<Double, Double> controller,
+                                                                                     Component<Integer, Double> plant) {
         return closed_loop(samplingInterval, setpoint, controller, plant, 5000, false, new Identity<>(), new Identity<>());
     }
 
-    public static List<PlotSimpleSetpointActualItem> closed_loop(SamplingInterval samplingInterval,
-                                                                 SetpointFunction setpoint,
-                                                                 Component<Double, Double> controller,
-                                                                 Component<Integer, Double> plant,
-                                                                 int simDuration) {
+    public static Observable<Tuple2<TimeSetpointActualPlotItem, String>> closed_loop(SamplingInterval samplingInterval,
+                                                                                     SetpointFunction setpoint,
+                                                                                     Component<Double, Double> controller,
+                                                                                     Component<Integer, Double> plant,
+                                                                                     int simDuration) {
         return closed_loop(samplingInterval, setpoint, controller, plant, simDuration, false, new Identity<>(), new Identity<>());
     }
 
-    public static List<PlotSimpleSetpointActualItem> closed_loop(SamplingInterval samplingInterval,
-                                                                 SetpointFunction setpoint,
-                                                                 Component<Double, Double> controller,
-                                                                 Component<Integer, Double> plant,
-                                                                 int simDuration,
-                                                                 boolean inverted,
-                                                                 Component<Double, Double> actuator,
-                                                                 Component<Double, Double> returnFilter) {
-        List<PlotSimpleSetpointActualItem> plotSimpleSetpointActualItems = new ArrayList<>(simDuration);
+    public static Observable<Tuple2<TimeSetpointActualPlotItem, String>> closed_loop(SamplingInterval samplingInterval,
+                                                                                     SetpointFunction setpoint,
+                                                                                     Component<Double, Double> controller,
+                                                                                     Component<Integer, Double> plant,
+                                                                                     int simDuration,
+                                                                                     boolean inverted,
+                                                                                     Component<Double, Double> actuator,
+                                                                                     Component<Double, Double> returnFilter) {
+        return Observable.create(subscriber -> {
+                    try {
+                        double z = 0.0;
+                        for (int t = 0; t < simDuration; t++) {
+                            double r = setpoint.at(t);
+                            double e = r - z;
+                            if (inverted) {
+                                e = -e;
+                            }
+                            double u = controller.work(e);
+                            double v = actuator.work(u);
+                            double y = plant.work((int) Math.round(v));
+                            z = returnFilter.work(y);
 
-        double z = 0.0;
-        for (int t = 0; t < simDuration; t++) {
-            double r = setpoint.at(t);
-            double e = r - z;
-            if (inverted) {
-                e = -e;
-            }
-            double u = controller.work(e);
-            double v = actuator.work(u);
-            double y = plant.work((int) Math.round(v));
-            z = returnFilter.work(y);
+                            TimeSetpointActualPlotItem plotItem = new TimeSetpointActualPlotItem(t, setpoint.at(t), y);
+                            String logLine = t + ", " + (t * samplingInterval.getInterval()) + ", " + r + ", " + e + ", " + u + ", " + v + ", " + y + ", " + z + ", " + plant.monitoring();
+                            subscriber.onNext(new Tuple2<>(plotItem, logLine));
 
-            System.out.println(t + ", " + (t * samplingInterval.getInterval()) + ", " + r + ", " + e + ", " + u + ", " + v + ", " + y + ", " + z + ", " + plant.monitoring());
-            plotSimpleSetpointActualItems.add(new PlotSimpleSetpointActualItem(t, setpoint.at(t), y));
-        }
+                            if (Thread.currentThread().isInterrupted()) {
+                                throw new InterruptedException();
+                            }
+                        }
+                    } catch (Exception ex) {
+                        subscriber.onError(ex);
+                    } finally {
+                        subscriber.onCompleted();
+                    }
+                }
 
-        return plotSimpleSetpointActualItems;
+        );
     }
 }

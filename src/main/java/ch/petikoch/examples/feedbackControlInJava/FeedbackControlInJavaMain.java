@@ -18,7 +18,8 @@
  */
 package ch.petikoch.examples.feedbackControlInJava;
 
-import ch.petikoch.examples.feedbackControlInJava.plotting.JPanelDisplayer;
+import ch.petikoch.examples.feedbackControlInJava.ui.plotting.JPanelDisplayer;
+import ch.petikoch.examples.feedbackControlInJava.ui.util.SwingUtils;
 import com.google.common.io.Files;
 import groovy.ui.Console;
 
@@ -54,13 +55,13 @@ public class FeedbackControlInJavaMain {
                 chartPanelHolder.add(new JLabel("Run the code to see the chart", SwingConstants.CENTER), BorderLayout.CENTER);
                 newLowerSplitPanel.setRightComponent(chartPanelHolder);
 
-                JPanelDisplayer.PANEL_HOLDER = chartPanelHolder;
+                JPanelDisplayer.usePanelHolder(chartPanelHolder);
 
                 splitPane.setRightComponent(newLowerSplitPanel);
 
                 EventQueue.invokeLater(() -> newLowerSplitPanel.setDividerLocation(0.5));
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (Exception ex) {
+                SwingUtils.printStackTraceAndDisplayToUser(ex);
             }
         });
     }
