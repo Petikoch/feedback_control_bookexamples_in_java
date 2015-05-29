@@ -78,7 +78,8 @@ public class PlottingAndSysOutPrintingSubscriber extends Subscriber<PlotItem> {
         }
 
         if ((plotEveryNth < 1) || ((itemCounter.incrementAndGet() % plotEveryNth) == 0)) {
-            plotter.plot(plotItem.getTimeSetpointActualPlotItem());
+            plotter.plot(plotItem.getTimeSetpointActualPlotItem(),
+                    plotItem.getTimeMonitoringPlotItem());
         }
     }
 }
