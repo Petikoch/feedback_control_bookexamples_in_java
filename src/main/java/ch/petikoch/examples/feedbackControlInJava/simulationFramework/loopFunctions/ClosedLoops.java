@@ -21,9 +21,10 @@ package ch.petikoch.examples.feedbackControlInJava.simulationFramework.loopFunct
 import ch.petikoch.examples.feedbackControlInJava.simulationFramework.Component;
 import ch.petikoch.examples.feedbackControlInJava.simulationFramework.SamplingInterval;
 import ch.petikoch.examples.feedbackControlInJava.simulationFramework.filtersAndActuators.Identity;
+import ch.petikoch.examples.feedbackControlInJava.simulationFramework.plotting.PlotItem;
+import ch.petikoch.examples.feedbackControlInJava.simulationFramework.plotting.TimeMonitoringPlotItem;
+import ch.petikoch.examples.feedbackControlInJava.simulationFramework.plotting.TimeSetpointActualPlotItem;
 import ch.petikoch.examples.feedbackControlInJava.simulationFramework.setpoints.SetpointFunction;
-import ch.petikoch.examples.feedbackControlInJava.ui.plotting.TimeSetpointActualPlotItem;
-import javaslang.Tuple2;
 import rx.Observable;
 
 /**
@@ -32,14 +33,14 @@ import rx.Observable;
  */
 public class ClosedLoops {
 
-    public static Observable<Tuple2<TimeSetpointActualPlotItem, String>> closed_loop(SamplingInterval samplingInterval,
+    public static Observable<PlotItem> closed_loop(SamplingInterval samplingInterval,
                                                                                      SetpointFunction setpoint,
                                                                                      Component<Double, Double> controller,
                                                                                      Component<Integer, Double> plant) {
         return closed_loop(samplingInterval, setpoint, controller, plant, 5000, false, new Identity<>(), new Identity<>());
     }
 
-    public static Observable<Tuple2<TimeSetpointActualPlotItem, String>> closed_loop(SamplingInterval samplingInterval,
+    public static Observable<PlotItem> closed_loop(SamplingInterval samplingInterval,
                                                                                      SetpointFunction setpoint,
                                                                                      Component<Double, Double> controller,
                                                                                      Component<Integer, Double> plant,
@@ -47,7 +48,7 @@ public class ClosedLoops {
         return closed_loop(samplingInterval, setpoint, controller, plant, simDuration, false, new Identity<>(), new Identity<>());
     }
 
-    public static Observable<Tuple2<TimeSetpointActualPlotItem, String>> closed_loop(SamplingInterval samplingInterval,
+    public static Observable<PlotItem> closed_loop(SamplingInterval samplingInterval,
                                                                                      SetpointFunction setpoint,
                                                                                      Component<Double, Double> controller,
                                                                                      Component<Integer, Double> plant,
@@ -69,9 +70,10 @@ public class ClosedLoops {
                             double y = plant.work((int) Math.round(v));
                             z = returnFilter.work(y);
 
-                            TimeSetpointActualPlotItem plotItem = new TimeSetpointActualPlotItem(t, setpoint.at(t), y);
                             String logLine = t + ", " + (t * samplingInterval.getInterval()) + ", " + r + ", " + e + ", " + u + ", " + v + ", " + y + ", " + z + ", " + plant.monitoring();
-                            subscriber.onNext(new Tuple2<>(plotItem, logLine));
+                            TimeSetpointActualPlotItem setpointActualPlotItem = new TimeSetpointActualPlotItem(t, setpoint.at(t), y);
+                            TimeMonitoringPlotItem monitoringPlotItem = new TimeMonitoringPlotItem(t, plant.monitoring());
+                            subscriber.onNext(new PlotItem(setpointActualPlotItem, monitoringPlotItem, logLine));
 
                             if (Thread.currentThread().isInterrupted()) {
                                 throw new InterruptedException();

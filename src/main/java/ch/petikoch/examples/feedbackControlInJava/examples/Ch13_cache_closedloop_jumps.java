@@ -23,11 +23,10 @@ import ch.petikoch.examples.feedbackControlInJava.ch13.SmoothedCache;
 import ch.petikoch.examples.feedbackControlInJava.simulationFramework.SamplingInterval;
 import ch.petikoch.examples.feedbackControlInJava.simulationFramework.controllers.pidcontrollers.PidController;
 import ch.petikoch.examples.feedbackControlInJava.simulationFramework.loopFunctions.ClosedLoops;
+import ch.petikoch.examples.feedbackControlInJava.simulationFramework.plotting.PlotItem;
 import ch.petikoch.examples.feedbackControlInJava.simulationFramework.setpoints.ConstantSetpointFunction;
 import ch.petikoch.examples.feedbackControlInJava.simulationFramework.setpoints.SetpointFunction;
 import ch.petikoch.examples.feedbackControlInJava.ui.PlottingAndSysOutPrintingSubscriber;
-import ch.petikoch.examples.feedbackControlInJava.ui.plotting.TimeSetpointActualPlotItem;
-import javaslang.Tuple2;
 import org.apache.commons.math3.distribution.NormalDistribution;
 import rx.Observable;
 
@@ -47,8 +46,7 @@ public class Ch13_cache_closedloop_jumps {
         //PidController pidController = new PidController(150.0, 2.0, samplingInterval); // 4
         SetpointFunction setpoint = new ConstantSetpointFunction(0.7);
 
-        Observable<Tuple2<TimeSetpointActualPlotItem, String>> plotDataSource =
-                ClosedLoops.closed_loop(samplingInterval, setpoint, pidController, smoothedCache, 10000);
+        Observable<PlotItem> plotDataSource = ClosedLoops.closed_loop(samplingInterval, setpoint, pidController, smoothedCache, 10000);
         plotDataSource.onBackpressureBlock().subscribe(new PlottingAndSysOutPrintingSubscriber("Cache hitrate", 50));
     }
 

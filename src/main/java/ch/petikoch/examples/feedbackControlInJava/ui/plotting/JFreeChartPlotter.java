@@ -18,6 +18,7 @@
  */
 package ch.petikoch.examples.feedbackControlInJava.ui.plotting;
 
+import ch.petikoch.examples.feedbackControlInJava.simulationFramework.plotting.TimeSetpointActualPlotItem;
 import ch.petikoch.examples.feedbackControlInJava.ui.util.SwingUtils;
 import net.jcip.annotations.ThreadSafe;
 import org.jfree.chart.ChartFactory;

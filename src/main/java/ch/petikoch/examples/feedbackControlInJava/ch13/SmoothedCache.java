@@ -28,8 +28,6 @@ import com.google.common.base.Preconditions;
  */
 public class SmoothedCache extends Cache {
 
-    //TODO test
-
     private final FixedFilter<ZeroOrOne, Double> fixedFilter;
 
     public SmoothedCache(int cacheSize,

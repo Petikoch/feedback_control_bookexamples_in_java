@@ -18,17 +18,16 @@
  */
 package ch.petikoch.examples.feedbackControlInJava.ui;
 
+import ch.petikoch.examples.feedbackControlInJava.simulationFramework.plotting.PlotItem;
 import ch.petikoch.examples.feedbackControlInJava.ui.plotting.JFreeChartPlotter;
-import ch.petikoch.examples.feedbackControlInJava.ui.plotting.TimeSetpointActualPlotItem;
 import ch.petikoch.examples.feedbackControlInJava.ui.util.SwingUtils;
-import javaslang.Tuple2;
 import net.jcip.annotations.ThreadSafe;
 import rx.Subscriber;
 
 import java.util.concurrent.atomic.AtomicLong;
 
 @ThreadSafe
-public class PlottingAndSysOutPrintingSubscriber extends Subscriber<Tuple2<TimeSetpointActualPlotItem, String>> {
+public class PlottingAndSysOutPrintingSubscriber extends Subscriber<PlotItem> {
 
     private final int plotEveryNth;
     private final JFreeChartPlotter plotter;
@@ -73,13 +72,13 @@ public class PlottingAndSysOutPrintingSubscriber extends Subscriber<Tuple2<TimeS
     }
 
     @Override
-    public void onNext(Tuple2<TimeSetpointActualPlotItem, String> tuple2) {
+    public void onNext(PlotItem plotItem) {
         if (doPrintToSysOut) {
-            System.out.println(tuple2._2);
+            System.out.println(plotItem.getLogLine());
         }
 
         if ((plotEveryNth < 1) || ((itemCounter.incrementAndGet() % plotEveryNth) == 0)) {
-            plotter.plot(tuple2._1);
+            plotter.plot(plotItem.getTimeSetpointActualPlotItem());
         }
     }
 }

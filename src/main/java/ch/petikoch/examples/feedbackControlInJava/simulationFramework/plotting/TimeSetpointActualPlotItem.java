@@ -16,7 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ch.petikoch.examples.feedbackControlInJava.ui.plotting;
+package ch.petikoch.examples.feedbackControlInJava.simulationFramework.plotting;
 
 import net.jcip.annotations.Immutable;
 

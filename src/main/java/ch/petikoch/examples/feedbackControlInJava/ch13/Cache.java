@@ -34,8 +34,6 @@ import java.util.Map;
 @NotThreadSafe
 public class Cache implements Component<Integer, Double> {
 
-    //TODO test
-
     private final DemandFunction<Integer> demandFunction;
     private final BiMap<Integer, Long> items2LastAccessTimeMap;
 
@@ -83,5 +81,10 @@ public class Cache implements Component<Integer, Double> {
                 .sorted()
                 .limit(numberOfElementsToDelete)
                 .forEach(lastAccessTime -> items2LastAccessTimeMap.remove(lastAccessTimeCache2Item.get(lastAccessTime)));
+    }
+
+    @Override
+    public String monitoring() {
+        return Integer.toString(cacheSize);
     }
 }
