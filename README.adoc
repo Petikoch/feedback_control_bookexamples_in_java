@@ -11,16 +11,17 @@ image:https://travis-ci.org/{github-user}/{project-name}.svg?branch={github-bran
 
 == Introduction
 
-This github project contains a port of the examples from the excellent
+This github project contains *a port* of the examples from the
 book http://shop.oreilly.com/product/0636920028970.do[*Feeback Control for computer Systems*] from Philipp K. Janert
-to the Java language. In the book the https://github.com/oreillymedia/feedback_control_for_computer_systems[examples] are in https://www.python.org[Python],
-here they are in Java 8.
+*to the Java language*.
+
+In the book the https://github.com/oreillymedia/feedback_control_for_computer_systems[examples] are in https://www.python.org[Python],
+here they are in *Java 8*.
 
 image::book.gif[]
 
 You will not find much explanation here about the examples, I assume you read the book yourself and
-want to try the examples yourself on the JVM. The book is written very well and compact,
-so the time for reading it is spent well.
+want to try the examples yourself on the JVM. The book is written well and compact, so it's worth reading it anyway.
 
 Personally, I think that the *feedback control* topic is very promising for a lot of problems
 in computer systems today and I assume, most of the software engineers don't know about it,
@@ -48,7 +49,7 @@ Afterwards you can run the examples directly from the IDE (start e.g. with `Ch13
 
 == Requirements
 
-Java 8
+Java *8*
 
 == Support
 
@@ -57,9 +58,10 @@ Please use GitHub issues and pull requests for support.
 == Motivation
 
 Since I wasn't familiar with python and I usually work on the JVM
-with Java 7/8 and http://www.groovy-lang.org/index.html[Groovy],
+with Java 7 or 8 and http://www.groovy-lang.org/index.html[Groovy],
 I thought it would be nice to have the code in a for me more familiar language.
 Also by porting it, I became more familiar with the examples and to a deeper understanding of the topic.
+
 The additional written unit-tests might help you to, to better understand the "things".
 
 I also thought it would be nice to be able to change the code
@@ -68,7 +70,7 @@ Therefor the groovy console with the http://www.jfree.org/jfreechart[JFreeChart]
 
 And last but not least, I think I'll do some more work in this field, thinking of experimenting instead of "just" simulating
 with e.g. a dynamic sized thread-pool which adjusts the number of threads depending on the CPU load. With real threads,
-real runnables, etc... For this, a lot of this code here comes handy.
+real runnables, etc... For this, a lot of the code from this github repo comes handy.
 
 
 Best regards,
