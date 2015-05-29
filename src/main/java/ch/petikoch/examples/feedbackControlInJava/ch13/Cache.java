@@ -38,13 +38,13 @@ public class Cache implements Component<Integer, Double> {
     private final BiMap<Integer, Long> items2LastAccessTimeMap;
 
     private long time = 0;
-    private int cacheSize;
+    private int requestedCacheSize;
 
     public Cache(int initialCacheSize, DemandFunction<Integer> demandFunction) {
         Preconditions.checkArgument(initialCacheSize >= 0);
         Preconditions.checkNotNull(demandFunction);
 
-        this.cacheSize = initialCacheSize;
+        this.requestedCacheSize = initialCacheSize;
         this.demandFunction = demandFunction;
         this.items2LastAccessTimeMap = HashBiMap.create(initialCacheSize);
     }
@@ -60,13 +60,13 @@ public class Cache implements Component<Integer, Double> {
 
     protected final ZeroOrOne simulateCacheAccess(Integer newCacheSize) {
         time++;
-        cacheSize = newCacheSize > 0 ? newCacheSize : -newCacheSize;
+        requestedCacheSize = newCacheSize > 0 ? newCacheSize : -newCacheSize;
         Integer requestedItemAtCurrentTime = demandFunction.demand(time);
         if (items2LastAccessTimeMap.containsKey(requestedItemAtCurrentTime)) {
             items2LastAccessTimeMap.put(requestedItemAtCurrentTime, time);
             return ZeroOrOne.ONE; // hit :-)
         } else {
-            if (items2LastAccessTimeMap.size() >= cacheSize) {
+            if (items2LastAccessTimeMap.size() >= requestedCacheSize) {
                 shrinkCacheByRemovingOldestEntries();
             }
             items2LastAccessTimeMap.put(requestedItemAtCurrentTime, time);
@@ -75,7 +75,7 @@ public class Cache implements Component<Integer, Double> {
     }
 
     private void shrinkCacheByRemovingOldestEntries() {
-        int numberOfElementsToDelete = 1 + items2LastAccessTimeMap.size() - cacheSize;
+        int numberOfElementsToDelete = 1 + items2LastAccessTimeMap.size() - requestedCacheSize;
         Map<Long, Integer> lastAccessTimeCache2Item = items2LastAccessTimeMap.inverse();
         lastAccessTimeCache2Item.keySet().stream()
                 .sorted()
@@ -85,6 +85,6 @@ public class Cache implements Component<Integer, Double> {
 
     @Override
     public String monitoring() {
-        return Integer.toString(cacheSize);
+        return Integer.toString(items2LastAccessTimeMap.size());
     }
 }
