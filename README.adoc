@@ -62,7 +62,7 @@ with Java 7 or 8 and http://www.groovy-lang.org/index.html[Groovy],
 I thought it would be nice to have the code in a for me more familiar language.
 Also by porting it, I became more familiar with the examples and to a deeper understanding of the topic.
 
-The additional written unit-tests might help you to, to better understand the "things".
+The additional written unit-tests in this project might help you too, to better understand the "things".
 
 I also thought it would be nice to be able to change the code
 and see the resulting chart in the same "environment" with one tool.
