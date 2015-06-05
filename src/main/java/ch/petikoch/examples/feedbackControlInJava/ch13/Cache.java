@@ -61,22 +61,26 @@ public class Cache implements Component<Integer, Double> {
 
         Preconditions.checkArgument(newCacheSize >= 0, "A negative cache size doesn't make sense.");
 
-        if (items2LastAccessTimeMap.size() >= newCacheSize) {
+        Integer requestedItemAtCurrentTime = demandFunction.demand(time);
+
+        ZeroOrOne result;
+        if (items2LastAccessTimeMap.containsKey(requestedItemAtCurrentTime)) {
+            items2LastAccessTimeMap.put(requestedItemAtCurrentTime, time);
+            result = ZeroOrOne.ONE; // hit :-)
+        } else {
+            items2LastAccessTimeMap.put(requestedItemAtCurrentTime, time);
+            result = ZeroOrOne.ZERO; // no hit :-(
+        }
+
+        if (items2LastAccessTimeMap.size() > newCacheSize) {
             shrinkCacheByRemovingOldestEntries(newCacheSize);
         }
 
-        Integer requestedItemAtCurrentTime = demandFunction.demand(time);
-        if (items2LastAccessTimeMap.containsKey(requestedItemAtCurrentTime)) {
-            items2LastAccessTimeMap.put(requestedItemAtCurrentTime, time);
-            return ZeroOrOne.ONE; // hit :-)
-        } else {
-            items2LastAccessTimeMap.put(requestedItemAtCurrentTime, time);
-            return ZeroOrOne.ZERO; // no hit :-(
-        }
+        return result;
     }
 
     private void shrinkCacheByRemovingOldestEntries(int newCacheSize) {
-        int numberOfElementsToDelete = 1 + items2LastAccessTimeMap.size() - newCacheSize;
+        int numberOfElementsToDelete = items2LastAccessTimeMap.size() - newCacheSize;
         Map<Long, Integer> lastAccessTimeCache2Item = items2LastAccessTimeMap.inverse();
         lastAccessTimeCache2Item.keySet().stream()
                 .sorted()
