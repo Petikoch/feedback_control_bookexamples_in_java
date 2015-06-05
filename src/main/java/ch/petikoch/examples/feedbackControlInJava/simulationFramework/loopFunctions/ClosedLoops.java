@@ -25,6 +25,7 @@ import ch.petikoch.examples.feedbackControlInJava.simulationFramework.plotting.P
 import ch.petikoch.examples.feedbackControlInJava.simulationFramework.plotting.TimeMonitoringPlotItem;
 import ch.petikoch.examples.feedbackControlInJava.simulationFramework.plotting.TimeSetpointActualPlotItem;
 import ch.petikoch.examples.feedbackControlInJava.simulationFramework.setpoints.SetpointFunction;
+import com.google.common.base.Joiner;
 import rx.Observable;
 
 /**
@@ -34,28 +35,28 @@ import rx.Observable;
 public class ClosedLoops {
 
     public static Observable<PlotItem> closed_loop(SamplingInterval samplingInterval,
-                                                                                     SetpointFunction setpoint,
-                                                                                     Component<Double, Double> controller,
-                                                                                     Component<Integer, Double> plant) {
+                                                   SetpointFunction setpoint,
+                                                   Component<Double, Double> controller,
+                                                   Component<Integer, Double> plant) {
         return closed_loop(samplingInterval, setpoint, controller, plant, 5000, false, new Identity<>(), new Identity<>());
     }
 
     public static Observable<PlotItem> closed_loop(SamplingInterval samplingInterval,
-                                                                                     SetpointFunction setpoint,
-                                                                                     Component<Double, Double> controller,
-                                                                                     Component<Integer, Double> plant,
-                                                                                     int simDuration) {
+                                                   SetpointFunction setpoint,
+                                                   Component<Double, Double> controller,
+                                                   Component<Integer, Double> plant,
+                                                   int simDuration) {
         return closed_loop(samplingInterval, setpoint, controller, plant, simDuration, false, new Identity<>(), new Identity<>());
     }
 
     public static Observable<PlotItem> closed_loop(SamplingInterval samplingInterval,
-                                                                                     SetpointFunction setpoint,
-                                                                                     Component<Double, Double> controller,
-                                                                                     Component<Integer, Double> plant,
-                                                                                     int simDuration,
-                                                                                     boolean inverted,
-                                                                                     Component<Double, Double> actuator,
-                                                                                     Component<Double, Double> returnFilter) {
+                                                   SetpointFunction setpoint,
+                                                   Component<Double, Double> controller,
+                                                   Component<Integer, Double> plant,
+                                                   int simDuration,
+                                                   boolean inverted,
+                                                   Component<Double, Double> actuator,
+                                                   Component<Double, Double> returnFilter) {
         return Observable.create(subscriber -> {
                     try {
                         double z = 0.0;
@@ -70,7 +71,7 @@ public class ClosedLoops {
                             double y = plant.work((int) Math.round(v));
                             z = returnFilter.work(y);
 
-                            String logLine = t + ", " + (t * samplingInterval.getInterval()) + ", " + r + ", " + e + ", " + u + ", " + v + ", " + y + ", " + z + ", " + plant.monitoring();
+                            String logLine = Joiner.on(", ").join(new Object[]{t, (t * samplingInterval.getInterval()), r, e, u, v, y, z, plant.monitoring()});
                             TimeSetpointActualPlotItem setpointActualPlotItem = new TimeSetpointActualPlotItem(t, setpoint.at(t), y);
                             TimeMonitoringPlotItem monitoringPlotItem = new TimeMonitoringPlotItem(t, plant.monitoring());
                             subscriber.onNext(new PlotItem(setpointActualPlotItem, monitoringPlotItem, logLine));
