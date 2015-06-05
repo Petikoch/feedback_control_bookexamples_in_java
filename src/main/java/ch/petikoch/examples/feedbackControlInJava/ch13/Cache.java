@@ -38,13 +38,11 @@ public class Cache implements Component<Integer, Double> {
     private final BiMap<Integer, Long> items2LastAccessTimeMap;
 
     private long time = 0;
-    private int requestedCacheSize;
 
     public Cache(int initialCacheSize, DemandFunction<Integer> demandFunction) {
         Preconditions.checkArgument(initialCacheSize >= 0);
         Preconditions.checkNotNull(demandFunction);
 
-        this.requestedCacheSize = initialCacheSize;
         this.demandFunction = demandFunction;
         this.items2LastAccessTimeMap = HashBiMap.create(initialCacheSize);
     }
@@ -60,22 +58,25 @@ public class Cache implements Component<Integer, Double> {
 
     protected final ZeroOrOne simulateCacheAccess(Integer newCacheSize) {
         time++;
-        requestedCacheSize = newCacheSize > 0 ? newCacheSize : -newCacheSize;
+
+        Preconditions.checkArgument(newCacheSize >= 0, "A negative cache size doesn't make sense.");
+
+        if (items2LastAccessTimeMap.size() >= newCacheSize) {
+            shrinkCacheByRemovingOldestEntries(newCacheSize);
+        }
+
         Integer requestedItemAtCurrentTime = demandFunction.demand(time);
         if (items2LastAccessTimeMap.containsKey(requestedItemAtCurrentTime)) {
             items2LastAccessTimeMap.put(requestedItemAtCurrentTime, time);
             return ZeroOrOne.ONE; // hit :-)
         } else {
-            if (items2LastAccessTimeMap.size() >= requestedCacheSize) {
-                shrinkCacheByRemovingOldestEntries();
-            }
             items2LastAccessTimeMap.put(requestedItemAtCurrentTime, time);
             return ZeroOrOne.ZERO; // no hit :-(
         }
     }
 
-    private void shrinkCacheByRemovingOldestEntries() {
-        int numberOfElementsToDelete = 1 + items2LastAccessTimeMap.size() - requestedCacheSize;
+    private void shrinkCacheByRemovingOldestEntries(int newCacheSize) {
+        int numberOfElementsToDelete = 1 + items2LastAccessTimeMap.size() - newCacheSize;
         Map<Long, Integer> lastAccessTimeCache2Item = items2LastAccessTimeMap.inverse();
         lastAccessTimeCache2Item.keySet().stream()
                 .sorted()
