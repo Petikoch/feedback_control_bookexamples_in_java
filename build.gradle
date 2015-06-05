@@ -27,7 +27,6 @@ repositories {
 }
 
 def rxJavaVersion = '1.0.+'
-def apacheCommonsMath3Version = '3.5'
 def jFreeChartVersion = '1.0.19'
 def googleGuavaVersion = '18.0'
 def jcipVersion = '1.0'
@@ -38,7 +37,6 @@ def cglibVersion = '3.1'
 dependencies {
     compile "org.codehaus.groovy:groovy-all:${groovyVersion}" // Apache 2.0 licence
     compile "org.jfree:jfreechart:${jFreeChartVersion}" // LGPL V2 licence
-    compile "org.apache.commons:commons-math3:${apacheCommonsMath3Version}" // Apache 2.0 licence
     compile "com.google.guava:guava:${googleGuavaVersion}" // Apache 2.0 licence
     compile "net.jcip:jcip-annotations:${jcipVersion}" // http://creativecommons.org/licenses/by/2.5
     compile "io.reactivex:rxjava:${rxJavaVersion}" // Apache 2.0 licence

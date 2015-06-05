@@ -26,7 +26,7 @@ import ch.petikoch.examples.feedbackControlInJava.simulationFramework.loopFuncti
 import ch.petikoch.examples.feedbackControlInJava.simulationFramework.plotting.PlotItem;
 import ch.petikoch.examples.feedbackControlInJava.simulationFramework.setpoints.SetpointFunction;
 import ch.petikoch.examples.feedbackControlInJava.ui.PlottingAndSysOutPrintingSubscriber;
-import org.apache.commons.math3.distribution.NormalDistribution;
+import ch.petikoch.examples.feedbackControlInJava.util.RandomNumberUtils;
 import rx.Observable;
 
 /**
@@ -50,7 +50,7 @@ public class Ch13_cache_closedloop {
 
         @Override
         public Integer demand(long time) {
-            return (int) new NormalDistribution(0.0, 15.0).sample();  // similiar to pythons random.gauss( 0, 15 )
+            return (int) RandomNumberUtils.randomGaussian(0.0, 15.0);  // similiar to pythons random.gauss( 0, 15 )
         }
     }
 
