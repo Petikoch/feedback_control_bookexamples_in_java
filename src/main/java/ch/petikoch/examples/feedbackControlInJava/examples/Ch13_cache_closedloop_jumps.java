@@ -54,13 +54,15 @@ public class Ch13_cache_closedloop_jumps {
 
         @Override
         public Integer demand(long time) {
+            int result;
             if (time < 3000) {
-                return (int) new NormalDistribution(0.0, 15.0).sample(); // similiar to pythons random.gauss( 0, 15 )
+                result = (int) new NormalDistribution(0.0, 15.0).sample(); // similiar to pythons random.gauss( 0, 15 )
             } else if (time < 5000) {
-                return (int) new NormalDistribution(0.0, 35.0).sample();
+                result = (int) new NormalDistribution(0.0, 35.0).sample();
             } else {
-                return (int) new NormalDistribution(100.0, 15.0).sample();
+                result = (int) new NormalDistribution(100.0, 15.0).sample();
             }
+            return result;
         }
     }
 
