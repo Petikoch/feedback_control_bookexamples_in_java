@@ -73,3 +73,18 @@ public class FixedFilter<I extends Number, O extends Number> implements Componen
         }
     }
 }
+
+/*
+class FixedFilter( Component ):
+    def __init__( self, n ):
+        self.n = n
+        self.data = []
+
+    def work( self, x ):
+        self.data.append(x)
+
+        if len(self.data) > self.n:
+            self.data.pop(0)
+
+        return float(sum(self.data))/len(self.data)
+ */
