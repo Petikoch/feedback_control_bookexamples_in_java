@@ -40,7 +40,7 @@ public class Ch13_cache_closedloop {
     public static void main(String[] args) {
         SamplingInterval samplingInterval = new SamplingInterval(1);
         DemandFunction<Integer> demandFunction = new RandomDemandFunction();
-        SetpointFunction setpoint = new LowerDemandAfter5000SetpointFunction();
+        SetpointFunction setpoint = new LowerSetpointAfter5000();
         SmoothedCache smoothedCache = new SmoothedCache(0, demandFunction, 100);
         PidController pidController = new PidController(100, 250, samplingInterval);
 
@@ -56,7 +56,7 @@ public class Ch13_cache_closedloop {
         }
     }
 
-    private static class LowerDemandAfter5000SetpointFunction implements SetpointFunction {
+    private static class LowerSetpointAfter5000 implements SetpointFunction {
 
         @Override
         public Double at(long time) {
