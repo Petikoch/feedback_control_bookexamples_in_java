@@ -43,8 +43,8 @@ public class SmoothedCache extends Cache {
      * @return the hitrate: a smoothened (averaged) hitrate in range 0..1
      */
     @Override
-    public Double work(Integer newCacheSize) {
-        ZeroOrOne hitOrNot = simulateCacheAccess(newCacheSize);
+    public Double work(Double newCacheSize) {
+        ZeroOrOne hitOrNot = simulateCacheAccess((int) Math.round(newCacheSize));
         return fixedFilter.work(hitOrNot);
     }
 }

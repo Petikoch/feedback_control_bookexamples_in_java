@@ -32,7 +32,7 @@ import java.util.Map;
  * https://github.com/oreillymedia/feedback_control_for_computer_systems/blob/master/ch13-cache.py
  */
 @NotThreadSafe
-public class Cache implements Component<Integer, Double> {
+public class Cache implements Component<Double, Double> {
 
     private final DemandFunction<Integer> demandFunction;
     private final BiMap<Integer, Long> items2LastAccessTimeMap;
@@ -52,11 +52,11 @@ public class Cache implements Component<Integer, Double> {
      * @return the hitrate: a zero if it wasn't a hit, a one if it was a hit
      */
     @Override
-    public Double work(Integer newCacheSize) {
-        return simulateCacheAccess(newCacheSize).doubleValue();
+    public Double work(Double newCacheSize) {
+        return simulateCacheAccess((int) Math.round(newCacheSize)).doubleValue();
     }
 
-    protected final ZeroOrOne simulateCacheAccess(Integer newCacheSize) {
+    protected final ZeroOrOne simulateCacheAccess(int newCacheSize) {
         time++;
 
         Preconditions.checkArgument(newCacheSize >= 0, "A negative cache size doesn't make sense.");

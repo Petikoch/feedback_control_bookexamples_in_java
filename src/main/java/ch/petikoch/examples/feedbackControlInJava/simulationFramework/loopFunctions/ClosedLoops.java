@@ -37,14 +37,14 @@ public class ClosedLoops {
     public static Observable<PlotItem> closed_loop(SamplingInterval samplingInterval,
                                                    SetpointFunction setpoint,
                                                    Component<Double, Double> controller,
-                                                   Component<Integer, Double> plant) {
+                                                   Component<Double, Double> plant) {
         return closed_loop(samplingInterval, setpoint, controller, plant, 5000, false, new Identity<>(), new Identity<>());
     }
 
     public static Observable<PlotItem> closed_loop(SamplingInterval samplingInterval,
                                                    SetpointFunction setpoint,
                                                    Component<Double, Double> controller,
-                                                   Component<Integer, Double> plant,
+                                                   Component<Double, Double> plant,
                                                    int simDuration) {
         return closed_loop(samplingInterval, setpoint, controller, plant, simDuration, false, new Identity<>(), new Identity<>());
     }
@@ -52,7 +52,7 @@ public class ClosedLoops {
     public static Observable<PlotItem> closed_loop(SamplingInterval samplingInterval,
                                                    SetpointFunction setpoint,
                                                    Component<Double, Double> controller,
-                                                   Component<Integer, Double> plant,
+                                                   Component<Double, Double> plant,
                                                    int simDuration,
                                                    boolean inverted,
                                                    Component<Double, Double> actuator,
@@ -68,7 +68,7 @@ public class ClosedLoops {
                             }
                             double u = controller.work(e);
                             double v = actuator.work(u);
-                            double y = plant.work((int) Math.round(v));
+                            double y = plant.work(v);
                             z = returnFilter.work(y);
 
                             String logLine = Joiner.on(", ").join(new Object[]{t, (t * samplingInterval.getInterval()), r, e, u, v, y, z, plant.monitoring()});
