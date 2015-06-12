@@ -19,6 +19,7 @@
 package ch.petikoch.examples.feedbackControlInJava.util;
 
 import net.jcip.annotations.ThreadSafe;
+import org.apache.commons.math3.distribution.BetaDistribution;
 
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -28,5 +29,9 @@ public class RandomNumberUtils {
     // http://stackoverflow.com/questions/10881998/equivalent-method-in-java-numpy-random-normalmean-var
     public static double randomGaussian(double mean, double variance) {
         return mean + (ThreadLocalRandom.current().nextGaussian() * variance);
+    }
+
+    public static double betavariate(double alpha, double beta) {
+        return new BetaDistribution(alpha, beta).sample();
     }
 }
