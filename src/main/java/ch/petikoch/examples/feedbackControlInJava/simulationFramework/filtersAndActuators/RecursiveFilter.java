@@ -27,8 +27,6 @@ import ch.petikoch.examples.feedbackControlInJava.simulationFramework.Component;
  */
 public class RecursiveFilter implements Component<Double, Double> {
 
-	//TODO write tests to show behaviour
-
 	private final double alpha;
 	private double y;
 
