@@ -54,7 +54,8 @@ public class JFreeChartPlotter {
                 monitoringDataset = createMonitoringDataset(monitoringSeriesName);
                 JFreeChart chart = createChart(
                         Lists.newArrayList(setpointActualDataset, monitoringDataset),
-                        chartTitle);
+                        chartTitle,
+                        monitoringSeriesName);
                 JPanel panel = createPanel(chart);
                 JPanelDisplayer.displayPanel(panel);
             });
@@ -80,7 +81,8 @@ public class JFreeChartPlotter {
     }
 
     private JFreeChart createChart(List<XYDataset> datasets,
-                                   String chartTitle) {
+                                   String chartTitle,
+                                   String monitoringSeriesName) {
         JFreeChart chart = ChartFactory.createXYLineChart(
                 chartTitle,
                 "Time steps",
@@ -101,7 +103,8 @@ public class JFreeChartPlotter {
         renderer1.setSeriesPaint(1, Color.red);
         plot.setRenderer(0, renderer1);
 
-        NumberAxis monitoringRangeAxis = new NumberAxis("Actual cache size");
+        NumberAxis monitoringRangeAxis = new NumberAxis(monitoringSeriesName);
+        monitoringRangeAxis.setUpperMargin(1.0); // 100% -> to force it to be in the lower half
         plot.setRangeAxis(1, monitoringRangeAxis);
         plot.setRangeAxisLocation(1, AxisLocation.BOTTOM_OR_RIGHT);
         plot.setDataset(1, datasets.get(1));
@@ -133,7 +136,8 @@ public class JFreeChartPlotter {
 
                             if (isDouble(timeMonitoringPlotItem.getMonitoring())) {
                                 XYSeries monitoringSeries = monitoringDataset.getSeries(0);
-                                monitoringSeries.add(timeMonitoringPlotItem.getTime(), Double.valueOf(timeMonitoringPlotItem.getMonitoring()));
+                                monitoringSeries.add(timeMonitoringPlotItem.getTime(),
+                                        Double.valueOf(timeMonitoringPlotItem.getMonitoring()));
                             }
                         }
                 );
