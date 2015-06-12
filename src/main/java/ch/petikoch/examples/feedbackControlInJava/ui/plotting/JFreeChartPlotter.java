@@ -46,12 +46,12 @@ public class JFreeChartPlotter {
     private XYSeriesCollection setpointActualDataset;
     private XYSeriesCollection monitoringDataset;
 
-    public JFreeChartPlotter(String chartTitle) {
+    public JFreeChartPlotter(String chartTitle, String monitoringSeriesName) {
         try {
             SwingUtils.executeBlockingOnEdt(() -> {
                 JPanelDisplayer.clearDisplay();
                 setpointActualDataset = createSetpointActualDataset();
-                monitoringDataset = createMonitoringDataset();
+                monitoringDataset = createMonitoringDataset(monitoringSeriesName);
                 JFreeChart chart = createChart(
                         Lists.newArrayList(setpointActualDataset, monitoringDataset),
                         chartTitle);
@@ -65,16 +65,16 @@ public class JFreeChartPlotter {
 
     private XYSeriesCollection createSetpointActualDataset() {
         XYSeriesCollection dataset = new XYSeriesCollection();
-        XYSeries setpointSeries = new XYSeries("Setpoint hit rate");
-        XYSeries actualSeries = new XYSeries("Actual hit rate");
+        XYSeries setpointSeries = new XYSeries("Setpoint");
+        XYSeries actualSeries = new XYSeries("Actual");
         dataset.addSeries(setpointSeries);
         dataset.addSeries(actualSeries);
         return dataset;
     }
 
-    private XYSeriesCollection createMonitoringDataset() {
+    private XYSeriesCollection createMonitoringDataset(final String monitoringSeriesName) {
         XYSeriesCollection dataset = new XYSeriesCollection();
-        XYSeries monitoringSeries = new XYSeries("Actual cache size");
+        XYSeries monitoringSeries = new XYSeries(monitoringSeriesName);
         dataset.addSeries(monitoringSeries);
         return dataset;
     }
@@ -84,7 +84,7 @@ public class JFreeChartPlotter {
         JFreeChart chart = ChartFactory.createXYLineChart(
                 chartTitle,
                 "Time steps",
-                "Hit rate",
+                chartTitle,
                 datasets.get(0),
                 PlotOrientation.VERTICAL,
                 true,                     // include legend
@@ -147,6 +147,7 @@ public class JFreeChartPlotter {
 
     private boolean isDouble(String monitoring) {
         try {
+            //noinspection ResultOfMethodCallIgnored
             Double.parseDouble(monitoring);
             return true;
         } catch (Exception nfe) {

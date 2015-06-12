@@ -36,30 +36,30 @@ import rx.Observable;
  */
 public class Ch14_adserving {
 
-	public static void main(String[] args) {
-		closedloop(1.0, 0.125, new RecursiveFilter(0.125));
-	}
+    public static void main(String[] args) {
+        closedloop(1.0, 0.125, new RecursiveFilter(0.125));
+    }
 
-	private static void closedloop(double kp, double ki, Component<Double, Double> returnFilter) {
-		SamplingInterval samplingInterval = new SamplingInterval(1);
-		SetpointFunction setpoint = new HigherSetpointAfter1000();
-		double k = 1.0 / 20.0;
-		AdPublisher adPublisher = new AdPublisher(100, 2);
-		PidController pidController = new PidController(k * kp, k * ki, samplingInterval);
+    private static void closedloop(double kp, double ki, Component<Double, Double> returnFilter) {
+        SamplingInterval samplingInterval = new SamplingInterval(1);
+        SetpointFunction setpoint = new HigherSetpointAfter1000();
+        double k = 1.0 / 20.0;
+        AdPublisher adPublisher = new AdPublisher(100, 2);
+        PidController pidController = new PidController(k * kp, k * ki, samplingInterval);
 
-		Observable<PlotItem> plotDataSource = ClosedLoops.closed_loop(samplingInterval, setpoint, pidController, adPublisher, 5000, false, new Identity<>(), returnFilter);
-		plotDataSource.onBackpressureBlock().subscribe(new PlottingAndSysOutPrintingSubscriber("Impressions per Day", 50));
-	}
+        Observable<PlotItem> plotDataSource = ClosedLoops.closed_loop(samplingInterval, setpoint, pidController, adPublisher, 5000, false, new Identity<>(), returnFilter);
+        plotDataSource.onBackpressureBlock().subscribe(new PlottingAndSysOutPrintingSubscriber("Impressions per Day", "Price", 50));
+    }
 
-	private static class HigherSetpointAfter1000 implements SetpointFunction {
+    private static class HigherSetpointAfter1000 implements SetpointFunction {
 
-		@Override
-		public Double at(long time) {
-			if (time > 1000) {
-				return 125d;
-			} else {
-				return 100d;
-			}
-		}
-	}
+        @Override
+        public Double at(long time) {
+            if (time > 1000) {
+                return 125d;
+            } else {
+                return 100d;
+            }
+        }
+    }
 }

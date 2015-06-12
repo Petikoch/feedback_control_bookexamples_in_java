@@ -35,22 +35,25 @@ public class PlottingAndSysOutPrintingSubscriber extends Subscriber<PlotItem> {
 
     private final AtomicLong itemCounter = new AtomicLong(0);
 
-    public PlottingAndSysOutPrintingSubscriber(String chartTitle) {
-        this(chartTitle, 1, true);
+    public PlottingAndSysOutPrintingSubscriber(String chartTitle,
+                                               String monitoringSeriesName) {
+        this(chartTitle, monitoringSeriesName, 1, true);
     }
 
     public PlottingAndSysOutPrintingSubscriber(String chartTitle,
+                                               String monitoringSeriesName,
                                                int plotEveryNth) {
-        this(chartTitle, plotEveryNth, true);
+        this(chartTitle, monitoringSeriesName, plotEveryNth, true);
     }
 
     public PlottingAndSysOutPrintingSubscriber(String chartTitle,
+                                               String monitoringSeriesName,
                                                int plotEveryNth,
                                                boolean doPrintToSysOut) {
         this.plotEveryNth = plotEveryNth;
         this.doPrintToSysOut = doPrintToSysOut;
 
-        plotter = new JFreeChartPlotter(chartTitle);
+        plotter = new JFreeChartPlotter(chartTitle, monitoringSeriesName);
     }
 
     @Override

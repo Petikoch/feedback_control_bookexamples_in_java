@@ -47,7 +47,7 @@ public class Ch13_cache_closedloop_jumps {
         SetpointFunction setpoint = new ConstantSetpointFunction(0.7);
 
         Observable<PlotItem> plotDataSource = ClosedLoops.closed_loop(samplingInterval, setpoint, pidController, smoothedCache, 10000);
-        plotDataSource.onBackpressureBlock().subscribe(new PlottingAndSysOutPrintingSubscriber("Cache hitrate", 50));
+        plotDataSource.onBackpressureBlock().subscribe(new PlottingAndSysOutPrintingSubscriber("Cache hit rate", "Actual cache size", 50));
     }
 
     private static class RandomJumpDemandFunction implements DemandFunction<Integer> {
