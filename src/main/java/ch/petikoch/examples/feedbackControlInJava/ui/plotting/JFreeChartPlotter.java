@@ -104,7 +104,7 @@ public class JFreeChartPlotter {
         plot.setRenderer(0, renderer1);
 
         NumberAxis monitoringRangeAxis = new NumberAxis(monitoringSeriesName);
-        monitoringRangeAxis.setUpperMargin(1.0); // 100% -> to force it to be in the lower half
+        monitoringRangeAxis.setUpperMargin(1.0); // 1.0 = 100% -> to force it to be in the lower half
         plot.setRangeAxis(1, monitoringRangeAxis);
         plot.setRangeAxisLocation(1, AxisLocation.BOTTOM_OR_RIGHT);
         plot.setDataset(1, datasets.get(1));
