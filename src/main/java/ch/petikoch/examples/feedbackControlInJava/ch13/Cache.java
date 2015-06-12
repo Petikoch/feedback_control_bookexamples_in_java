@@ -59,7 +59,10 @@ public class Cache implements Component<Double, Double> {
     protected final ZeroOrOne simulateCacheAccess(int newCacheSize) {
         time++;
 
-        Preconditions.checkArgument(newCacheSize >= 0, "A negative cache size doesn't make sense.");
+        if (newCacheSize < 0) {
+            // the PID controller doesn't care for non-negative values. We do.
+            newCacheSize = 0;
+        }
 
         Integer requestedItemAtCurrentTime = demandFunction.demand(time);
 

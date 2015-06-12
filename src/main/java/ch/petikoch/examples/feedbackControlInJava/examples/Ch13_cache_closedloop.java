@@ -35,8 +35,6 @@ import rx.Observable;
  */
 public class Ch13_cache_closedloop {
 
-    //TODO analyze. Seems to be broken
-
     public static void main(String[] args) {
         SamplingInterval samplingInterval = new SamplingInterval(1);
         DemandFunction<Integer> demandFunction = new RandomDemandFunction();
