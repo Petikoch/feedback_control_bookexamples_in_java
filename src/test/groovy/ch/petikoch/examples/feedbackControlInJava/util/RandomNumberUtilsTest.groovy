@@ -43,6 +43,16 @@ class RandomNumberUtilsTest extends Specification {
         100.0 | 15.0 | 5 | 100000 | 0.99998   // 0.999999426697
     }
 
+    def 'betavariate: Smoketest'() {
+        when:
+        10000.times {
+            assert RandomNumberUtils.betavariate(12.0, 12.0) >= 0.0
+        }
+
+        then:
+        noExceptionThrown()
+    }
+
     private static double numberOfValuesInsideTolerance(double mean,
                                                         double deviation,
                                                         int consideredDeviationFactor,
