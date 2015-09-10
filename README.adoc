@@ -47,9 +47,12 @@ Clone the repo directly and import it into your favourite IDE (IntelliJ, Eclipse
 
 Afterwards you can run the examples directly from the IDE (start e.g. with `Ch13_cache_closedloop_jumps.java`).
 
-=== Explained as video
+== Introduction video
 
-video::https://www.youtube.com/watch?v=C6S8X3nmbns[youtube]
+https://www.youtube.com/watch?v=C6S8X3nmbns
+
+image::video.png[]
+
 
 == Requirements
 
