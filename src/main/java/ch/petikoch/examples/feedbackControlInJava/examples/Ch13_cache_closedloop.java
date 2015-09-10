@@ -40,7 +40,8 @@ public class Ch13_cache_closedloop {
         DemandFunction<Integer> demandFunction = new RandomDemandFunction();
         SetpointFunction setpoint = new LowerSetpointAfter5000();
         SmoothedCache smoothedCache = new SmoothedCache(0, demandFunction, 100);
-        PidController pidController = new PidController(100, 250, samplingInterval);
+        PidController pidController = new PidController(100, 250, samplingInterval); // original: heavily oscillating
+        //PidController pidController = new PidController(150.0, 2.0, samplingInterval); // "better"
 
         Observable<PlotItem> plotDataSource = ClosedLoops.closed_loop(samplingInterval, setpoint, pidController, smoothedCache, 10000);
         plotDataSource.onBackpressureBlock().subscribe(new PlottingAndSysOutPrintingSubscriber("Cache hit rate", "Actual cache size", 50));
