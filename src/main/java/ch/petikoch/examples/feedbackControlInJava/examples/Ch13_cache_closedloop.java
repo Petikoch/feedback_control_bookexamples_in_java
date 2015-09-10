@@ -30,7 +30,7 @@ import ch.petikoch.examples.feedbackControlInJava.util.RandomNumberUtils;
 import rx.Observable;
 
 /**
- * A java port of the closedloop python function from
+ * A java port of the 'closedloop' python function from
  * https://github.com/oreillymedia/feedback_control_for_computer_systems/blob/master/ch13-cache.py
  */
 public class Ch13_cache_closedloop {
@@ -66,5 +66,20 @@ public class Ch13_cache_closedloop {
             }
         }
     }
-
 }
+
+/*
+def closedloop():
+    def demand( t ):
+        return int( random.gauss( 0, 15 ) )
+
+    def setpoint( t ):
+        if t > 5000:
+            return 0.5
+        return 0.7
+
+    p = SmoothedCache( 0, demand, 100 )
+    c = fb.PidController( 100, 250 )
+
+    fb.closed_loop( setpoint, c, p, 10000 )
+ */

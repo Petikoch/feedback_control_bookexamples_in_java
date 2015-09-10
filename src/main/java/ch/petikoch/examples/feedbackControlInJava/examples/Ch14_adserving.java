@@ -31,7 +31,7 @@ import ch.petikoch.examples.feedbackControlInJava.ui.PlottingAndSysOutPrintingSu
 import rx.Observable;
 
 /**
- * A java port of the closedloop python function from
+ * A java port of the 'closedloop' python function from
  * https://github.com/oreillymedia/feedback_control_for_computer_systems/blob/master/ch14-adserving.py
  */
 public class Ch14_adserving {
@@ -63,3 +63,18 @@ public class Ch14_adserving {
         }
     }
 }
+
+/*
+def closedloop( kp, ki, f=fb.Identity() ):
+    def setpoint( t ):
+        if t > 1000:
+            return 125
+        return 100
+
+    k = 1.0/20.0
+
+    p = AdPublisher( 100, 2 )
+    c = fb.PidController( k*kp, k*ki )
+
+    fb.closed_loop( setpoint, c, p, returnfilter=f )
+ */

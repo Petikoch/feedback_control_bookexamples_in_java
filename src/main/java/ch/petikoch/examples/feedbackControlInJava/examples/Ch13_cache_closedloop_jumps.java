@@ -31,7 +31,7 @@ import ch.petikoch.examples.feedbackControlInJava.util.RandomNumberUtils;
 import rx.Observable;
 
 /**
- * A java port of the closedloop_jumps python function from
+ * A java port of the 'closedloop_jumps' python function from
  * https://github.com/oreillymedia/feedback_control_for_computer_systems/blob/master/ch13-cache.py
  */
 public class Ch13_cache_closedloop_jumps {
@@ -65,5 +65,26 @@ public class Ch13_cache_closedloop_jumps {
             return result;
         }
     }
-
 }
+
+/*
+def closedloop_jumps():
+    def demand( t ):
+        if t < 3000:
+            return int( random.gauss( 0, 15 ) )
+        elif t < 5000:
+            return int( random.gauss( 0, 35 ) )
+        else:
+            return int( random.gauss( 100, 15 ) )
+
+    def setpoint( t ):
+        return 0.7
+
+    p = SmoothedCache( 0, demand, 100 )
+    c = fb.PidController( 270, 7.5 ) # Ziegler-Nichols - closedloop1
+#   c = fb.PidController( 100, 4.3 ) # Cohen-Coon - 2
+#   c = fb.PidController( 80, 2.0 )  # AMIGO - 3
+#   c = fb.PidController( 150, 2 )   # 4
+
+    fb.closed_loop( setpoint, c, p, 10000 )
+ */
