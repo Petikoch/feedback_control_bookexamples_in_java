@@ -23,7 +23,7 @@ import ch.petikoch.examples.feedbackControlInJava.simulationFramework.filtersAnd
 import com.google.common.base.Preconditions;
 
 /**
- * A java port of the SmoothedCache python class from
+ * A java port of the 'SmoothedCache' python class from
  * https://github.com/oreillymedia/feedback_control_for_computer_systems/blob/master/ch13-cache.py
  */
 public class SmoothedCache extends Cache {

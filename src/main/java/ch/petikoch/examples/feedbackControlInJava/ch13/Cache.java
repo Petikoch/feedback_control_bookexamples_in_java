@@ -28,7 +28,7 @@ import net.jcip.annotations.NotThreadSafe;
 import java.util.Map;
 
 /**
- * A java port of the Cache python class from
+ * A java port of the 'Cache' python class from
  * https://github.com/oreillymedia/feedback_control_for_computer_systems/blob/master/ch13-cache.py
  */
 @NotThreadSafe

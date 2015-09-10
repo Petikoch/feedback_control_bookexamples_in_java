@@ -19,7 +19,7 @@
 package ch.petikoch.examples.feedbackControlInJava.ch13;
 
 /**
- * A java port of the demand python function from
+ * A java port of the 'demand' python function from
  * https://github.com/oreillymedia/feedback_control_for_computer_systems/blob/master/ch13-cache.py
  * <p>
  * Can be used e.g. to simulate the demand for a cache.

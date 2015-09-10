@@ -23,7 +23,7 @@ import ch.petikoch.examples.feedbackControlInJava.util.RandomNumberUtils;
 import net.jcip.annotations.NotThreadSafe;
 
 /**
- * A java port of the AdPublisher python class from
+ * A java port of the 'AdPublisher' python class from
  * <p>
  * https://github.com/oreillymedia/feedback_control_for_computer_systems/blob/master/ch14-adserving.py
  */
