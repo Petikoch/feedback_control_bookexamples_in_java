@@ -44,7 +44,7 @@ public class Ch15_serverpool {
         ServerPool serverPool = new ServerPool(0, new ConsumeQueueFunction(), new LoadQueueFunction());
         SpecialController controller = new SpecialController(100, 10);
 
-        Observable<PlotItem> plotDataSource = ClosedLoops.closed_loop(samplingInterval, setpoint, controller, serverPool, 50000, false, new Integrator(samplingInterval), new Identity<>());
+        Observable<PlotItem> plotDataSource = ClosedLoops.closed_loop(samplingInterval, setpoint, controller, serverPool, 5000, false, new Integrator(samplingInterval), new Identity<>());
         plotDataSource.onBackpressureBlock().subscribe(new PlottingAndSysOutPrintingSubscriber("Completion rate", "Number of server instances", 50));
     }
 
