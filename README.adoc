@@ -28,6 +28,9 @@ in computer systems today and I assume, most of the software engineers don't kno
 although they use *feedback control* everyday without even noticing it
 (toilet flush? car cruise control? room temperature control? ...). At least for me this was true since 2015.
 
+The examples are all about feedback control *simulation*. If you are looking for some kind of "library to use" in a *real* application,
+check out https://github.com/Petikoch/feedbackcontrol4j.
+
 == How to run the examples
 
 === Via gradle (wrapper)
