@@ -41,11 +41,15 @@ Clone the git repo to your local machine, `cd` to the created dir and execute
 This will build the project, download all dependencies and startup the slightly modified http://www.groovy-lang.org/groovyconsole.html[groovy console].
 Run the code with the "Execute Groovy Script" Button in the toolbar. Open the examples via the "Open Groovy Script" Button in the toolbar (and yes, select one of the java-Files).
 
+image::run_standalone.png[]
+
 === Via IDE
 
 Clone the repo directly and import it into your favourite IDE (IntelliJ, Eclipse, ...).
 
 Afterwards you can run the examples directly from the IDE (start e.g. with `Ch13_cache_closedloop_jumps.java`).
+
+image::run_in_ide.png[]
 
 == Introduction video
 
