@@ -56,7 +56,9 @@ image::run_in_ide.png[]
 
 == Introduction video
 
-video::C6S8X3nmbns[youtube]
+https://www.youtube.com/watch?v=C6S8X3nmbns
+
+image::video.png[]
 
 == Requirements
 
